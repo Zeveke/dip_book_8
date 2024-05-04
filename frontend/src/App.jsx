@@ -18,6 +18,8 @@ import {BookingList} from './compenents/admin/component.bookingsList';
 import { RoomList } from './compenents/admin/component.roomsList';
 import { UserList } from './compenents/admin/component.usersList';
 import { ProfileAdmin } from './compenents/admin/component.profile';
+import NotFoundPage from './compenents/client/NotFoundPage';
+
 
 function App() {
   const isAdmin = localStorage.getItem("isAdmin")=== "true";
@@ -32,6 +34,7 @@ function App() {
         <Route path='rooms' element={<Rooms />} />
         <Route path='reservation' element={<Reservation />} />
         <Route path='contact' element={<Contact />} />
+        <Route path='*' element={<NotFoundPage />} /> {/* Страница ошибки */}
         {isLoggedIn ? (
           <>
             <Route path='bookings' element={<Bookings />} />
@@ -57,6 +60,7 @@ function App() {
             <Route path='allrooms' element={<RoomList />} />
             <Route path='allusers' element={<UserList />} />
             <Route path='profileadmin' element={<ProfileAdmin />} />
+            <Route path='*' element={<NotFoundPage />} /> {/* Страница ошибки */}
           </>
         ) : null}
 
@@ -68,4 +72,3 @@ function App() {
 
 
 export default App;
-     
