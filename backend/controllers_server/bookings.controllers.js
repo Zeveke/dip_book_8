@@ -1,4 +1,3 @@
-//const Booking=require("../models/Booking")
 const bookingServices = require("../services/booking.services");
 const catalogServices = require("../services/catalog.services");
 const userServices = require("../services/login.services");
