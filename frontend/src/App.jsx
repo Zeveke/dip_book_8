@@ -34,7 +34,6 @@ function App() {
         <Route path='rooms' element={<Rooms />} />
         <Route path='reservation' element={<Reservation />} />
         <Route path='contact' element={<Contact />} />
-        <Route path='*' element={<NotFoundPage />} /> {/* Страница ошибки */}
         {isLoggedIn ? (
           <>
             <Route path='bookings' element={<Bookings />} />
@@ -52,7 +51,6 @@ function App() {
         <Route path='' element={<LoginForm />} />
         <Route path='signin' element={<LoginForm />} />
         <Route path='signup' element={<SignUpForm />} />
-
         {isAdmin ? (
           <>
             <Route path='dashboard' element={<Dashboard />} />
@@ -60,15 +58,13 @@ function App() {
             <Route path='allrooms' element={<RoomList />} />
             <Route path='allusers' element={<UserList />} />
             <Route path='profileadmin' element={<ProfileAdmin />} />
-            <Route path='*' element={<NotFoundPage />} /> {/* Страница ошибки */}
           </>
         ) : null}
-
-
       </Route>
+      <Route path='*' element={<NotFoundPage />} /> {/* Страница ошибки */}
     </Routes>
   );
 }
 
-
 export default App;
+
