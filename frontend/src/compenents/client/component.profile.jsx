@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { updatePassword } from '../../services/login.services';
-import { useDispatch } from 'react-redux'; // Импортируем функцию useDispatch из react-redux
-
+import { useDispatch } from 'react-redux'; 
 export function Profile() {
   const [showModal, setShowModal] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const dispatch = useDispatch(); // Получаем диспетчер Redux
+  const dispatch = useDispatch(); 
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => {
@@ -21,8 +20,8 @@ export function Profile() {
       const userId = localStorage.getItem('userId');
       const confirmChange = window.confirm('Вы уверены, что хотите сменить свой пароль?');
       if (confirmChange) {
-        // Dispatching action directly inside the component
-        const response = await dispatch(updatePassword(userId, newPassword)); // Используем диспетчер Redux для вызова действия
+       
+        const response = await dispatch(updatePassword(userId, newPassword)); 
         console.log(response.message);
         handleClose();
       }
