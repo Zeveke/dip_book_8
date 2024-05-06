@@ -1,4 +1,3 @@
-//const Room=require("../models/Room")
 const catalogServices = require("../services/catalog.services");
 
 async function getAllRooms(req, res) {
