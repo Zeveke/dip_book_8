@@ -6,10 +6,6 @@ const jwt = require("jsonwebtoken");
 
 app.use(cors());
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-const dbConnection = require("./db");
-
 const roomRouter = require("./routes/rooms.routes");
 const loginRouter = require("./routes/login.routes");
 const bookingRouter = require("./routes/bookings.routes");
@@ -25,9 +21,3 @@ app.listen(port, () => {
 app.use("/rooms", roomRouter);
 app.use("/bookings", bookingRouter);
 app.use("/", loginRouter);
-
-app.use("/static", express.static("./build/static/"));
-
-app.get("/*", (req, res) => {
-  res.sendFile(__dirname + "/build/index.html");
-});
