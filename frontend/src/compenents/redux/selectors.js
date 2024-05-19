@@ -1,5 +1,17 @@
 export const selectBookings = (state) => state.booking.bookings;
-
 export const selectLoading = (state) => state.booking.loading;
-
 export const selectError = (state) => state.booking.error;
+export const selectRoom = (state) => state.checkout.room;
+export const selectCheckoutLoading = (state) => state.checkout.loading;
+export const selectCheckoutError = (state) => state.checkout.error;
+export const selectBookingLoading = (state) => state.checkout.bookingLoading;
+export const selectBookingError = (state) => state.checkout.bookingError;
+export const selectGalleryRooms = (state) => state.gallery.rooms;
+export const selectGalleryLoading = (state) => state.gallery.loading;
+export const selectGalleryError = (state) => state.gallery.error;
+export const selectLoginError = (state) => state.gallery.error;
+export const selectLoginuserData = (state) => state.gallery.userData;
+export const selectProfileUserData = (state) => state.profile.userData;
+export const selectProfileError = (state) => state.profile.error;
+export const selectRegisterError = (state) => state.register.error;
+export const selectRegisterUserData = (state) => state.register.userData;
