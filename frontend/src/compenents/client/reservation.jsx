@@ -1,30 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux'; 
 import { getRoom } from "../../sevices/room.services";
 import { Link } from "react-router-dom";
 import { Modal , Carousel } from 'react-bootstrap';  
 import { DatePicker } from 'antd';
-import Loader from "./loader/Loader"; 
-import { 
-  updateReservationRequest, 
-  updateReservationSuccess, 
-  updateReservationFailure,
-  setReservationType,
-  setReservationQuery,
-  UPDATE_RESERVATION_REQUEST,
-  UPDATE_RESERVATION_FAILURE,
-  UPDATE_RESERVATION_SUCCESS,
-
-} from './redux/actions/ReservationAction';
+import Loader from "./loader/loader"; 
 import Button from "../Button";
-
-import { fetchReservationThunk } from './redux/thunks/reservation.thunk'
 
 const { RangePicker } = DatePicker;
 
-export function Reservation() {  
+export function Reservation() {
+  const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);  
-  
+  const [query, setQuery] = useState("");
+  const [type, setType] = useState("");
   const [show, setShow] = useState(false);
   const [fromdate, setFromdate] = useState();
   const [todate, setTodate] = useState();
@@ -33,28 +21,19 @@ export function Reservation() {
 
   const [duplicateRooms, setDuplicateRooms] = useState([]);  
 
-  const dispatch = useDispatch();
-  const { rooms, query, type } = useSelector((state) => state.reservation)
   const fetchRooms = useCallback(async () => {
     setLoading(true); 
     try {
-      const res = await getRoom(query, type);      
+      const res = await getRoom(query, type);
+      setRooms(res.data);
       setDuplicateRooms(res.data);
       console.log("Данные из базы данных:", res.data);
-      dispatch(updateReservationRequest(res.data, UPDATE_RESERVATION_REQUEST))
     } catch (error) {
-      dispatch(updateReservationFailure(UPDATE_RESERVATION_FAILURE))
       console.error("Ошибка при выборе комнат:", error);
     } finally {
       setLoading(false); 
     }
-  }, [query, type, dispatch ]);
-
-  useEffect(() => {
-   dispatch(fetchReservationThunk(query, type))
-  }, [query, type, dispatch])
-
-  console.log(type, query)
+  }, [query, type]);
 
   useEffect(() => {
     fetchRooms();
@@ -96,12 +75,11 @@ export function Reservation() {
         }
 
         if (availability === true) {
-          dispatch(updateReservationSuccess(UPDATE_RESERVATION_SUCCESS))
-          temprooms.push(rooms);
+          temprooms.push(room);
         }
       }
-      dispatch(updateReservationRequest(temprooms, UPDATE_RESERVATION_REQUEST))
-      
+
+      setRooms(temprooms);
     } else { 
       
       window.location.reload(); 
@@ -123,7 +101,7 @@ export function Reservation() {
           <div className="card shadow border-0 rounded mb-4 mt-4">
             <div className="row p-2">
               <div className="col m-3 rounded-2">
-                <select className="form-control" value={type} onChange={e=>dispatch(setReservationType(e.target.value))} disabled={datesSelected}>
+                <select className="form-control" value={type} onChange={e=>setType(e.target.value)} disabled={datesSelected}>
                   <option value="all"> Выберите количество гостей</option>
                   <option value="Single" >1 гость</option>
                   <option value="Double">до 3 гостей</option>
@@ -140,7 +118,7 @@ export function Reservation() {
               </div>
               { !datesSelected && (
                 <div className="col m-3 rounded-2">
-                  <input type="text" className="form-control" placeholder="Фильтр по имени номера" onChange={e=>dispatch(setReservationQuery(e.target.value))}/>
+                  <input type="text" className="form-control" placeholder="Фильтр по имени номера" onChange={e=>setQuery(e.target.value)}/>
                 </div>
               )}
             </div>
@@ -154,7 +132,7 @@ export function Reservation() {
             <div key={room._id} className="card bg-white rounded overflow-hidden mb-4">
               <div className="row">
                 <div className="col-md-2 p-0">
-                <img src={`${process.env.REACT_APP_API_HOST}${room.image[0]}`} className="img-fluid h-100 w-100 " alt="" />
+                  <img src={`${process.env.REACT_APP_API_URL}${room.image[0]}`} className="img-fluid h-100 w-100" alt="" />
                 </div>
                 <div className="col-md-6 p-3 m-auto">
                   <h3>{room.name}</h3>
@@ -186,8 +164,10 @@ export function Reservation() {
                       <Link to="/login" className="btn btn-success rounded-0">
                         Бронируй немедленно
                       </Link>
-                  )}                 
-                  <Button onClick={() => handleShow(room)} name="Смотри подробности" className="btn btn-dark rounded-0 m-2" />    
+                  )}
+                     <Button className="btn btn-dark rounded-0 m-2" onClick={() => handleShow(room)}>
+      Смотри подробности
+    </Button>
                 </div>
               </div>
             </div>
@@ -204,7 +184,7 @@ export function Reservation() {
                 <Carousel>
                   {selectedRoom.image.map((image, index) => (
                     <Carousel.Item key={index}>
-                      <img className="d-block w-100" src={`${process.env.REACT_APP_API_HOST}${image}`} alt={`Slide ${index}`} />
+                      <img className="d-block w-100" src={`${process.env.REACT_APP_API_URL}${image}`} alt={`Slide ${index}`} />
                     </Carousel.Item>
                   ))}
                 </Carousel>

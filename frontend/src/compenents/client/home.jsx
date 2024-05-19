@@ -17,18 +17,26 @@ export function Home() {
           <div className="offer bg-white d-inline-flex m-auto">
             <p className="mb-0 lead text-uppercase">
             </p>
-          </div>          
-                      <Button onClick={handleCheckAvailabilityClick} name="Выбери даты и номера" className="btn btn-success" />
+          </div>
+          <Button
+            className="btn rounded-0 w-200 ml-2"
+            onClick={handleCheckAvailabilityClick}
+            style={{ backgroundColor: "#FFA500", color: "white" }}
+          >
+            Выбери даты и номера
+          </Button>
           <div className="availability mt-4">
             <form action="reservation">
               <div className="card shadow border-0 rounded-0">               
                 </div>
             </form>
           </div>
-         
+          {/* Check availability */}
         </div>
       </section>
-           
+      {/* Hero */}
+
+      {/* About us */}
       <section className="about py-5">
         <div className="container">
           <div className="text-center">
@@ -51,7 +59,7 @@ export function Home() {
 
 
                 </p>
-            <a href="about" className="btn btn-orange mt-5 w-200"   style={{ backgroundColor: "#28A745", color: "white" }}>
+            <a href="about" className="btn btn-orange mt-5 w-200"   style={{ backgroundColor: "#FFA500", color: "white" }}>
               Читайте подробности
             </a>
           </div>

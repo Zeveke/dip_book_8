@@ -1,36 +1,24 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useDispatch } from 'react-redux'; 
+import React, { useEffect, useState } from "react";
 import { getRooms } from "../../sevices/room.services";
-import { 
-  fetchDateRoomRequest,   
-  fetchDateRoomFailure,
-  FETCH_DATE_ROOM_REQUEST,
-  FETCH_DATE_ROOM_FAILURE,  
-
-} from './redux/actions/roomActions';
 
 export function Rooms() {
-  const dispatch = useDispatch();
 
-  const [rooms, setRooms] = useState([]);
-  const query = "";
+    const [rooms, setRooms] = useState([]);
+    const query=''
 
-  const fetchRooms = useCallback(async () => {
-    try {
-      const res = await getRooms(query);
-      setRooms(res.data);
-      console.log("Данные из базы данных:", res.data);
-      
-      dispatch(fetchDateRoomRequest(FETCH_DATE_ROOM_REQUEST));
-    } catch (error) {
-      dispatch(fetchDateRoomFailure(FETCH_DATE_ROOM_FAILURE));
-      console.error("Ошибка при выборе комнат:", error);
-    }
-  }, [dispatch, query]);
-
-  useEffect(() => {
-    fetchRooms();
-  }, [fetchRooms]);
+    useEffect(() => {
+        fetchRooms();
+      }, [query]);
+    
+      async function fetchRooms() {
+        try {
+          const res = await getRooms(query);
+          setRooms(res.data);
+          console.log("Данные из базы данных:", res.data);
+        } catch (error) {
+          console.error("Ошибка при выборе комнат:", error);
+        }
+      }
 
   return (
     <section className="gallery py-5">
@@ -43,7 +31,7 @@ export function Rooms() {
         <div className="gallery-grid">
         {rooms.map((room) => (
            <div key={room._id}  className="img-holder position-relative overflow-hidden">
-           <img src={`${process.env.REACT_APP_API_HOST}${room.image[0]}`} className="img-fluid h-100 w-100 " alt="" />
+           <img src={`${process.env.REACT_APP_API_URL}${room.image[0]}`} className="img-fluid h-100 w-100 " alt="" />
 
            <div className="info">
               

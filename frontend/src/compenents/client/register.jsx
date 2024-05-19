@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import '../../login_admin.css';
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { addUser, userLogin } from "../../sevices/login.services";
+import { registerSuccess, registerFailure } from "../../compenents/redux/actions/registerActions";
 import Button from "../Button";
 
 export function Register () {
@@ -9,6 +11,7 @@ export function Register () {
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const validatePassword = (password) => {
     
@@ -57,8 +60,10 @@ export function Register () {
       window.alert("Вы - Администратор !");
       navigate("/admin/dashboard");
       window.location.reload();
+      dispatch(registerSuccess(response.data));
     } catch (error) {
       window.alert("Произошла ошибка при добавлении администратора.");
+      dispatch(registerFailure(error));
     }
   }
   const containerStyles = {
@@ -84,9 +89,13 @@ export function Register () {
 
   return (
        
-    <div style={globalStyles}>     
-    <Button onClick={handleBackToHome} name="Домой" className="back-arrow m-2 custom-button" />    
-    <Button onClick={GoToSignIn} name="Есть аккаунт" className="back-arrow m-2 custom-button" />
+    <div style={globalStyles}>
+    <Button className="back-arrow m-2 custom-button" onClick={handleBackToHome}>
+        <span>Домой</span>
+      </Button>
+      <Button className="back-arrow m-2 custom-button" onClick={GoToSignIn}>
+        <span>Есть аккаунт</span>
+      </Button>
     <div className="container" style={containerStyles}>
       <div className="screen">
         <div className="screen__content">
@@ -105,8 +114,11 @@ export function Register () {
               <i className="login__icon fas fa-lock"></i>
               <input type="password" className="login__input" placeholder="Пароль" 
               value={password} onChange={(e)=>{setPassword(e.target.value)}}/>
-            </div>            
-            <Button onClick={(e) => handlForm(e)} name="Регистрация админа" className="login__submit" />    
+            </div>
+            <button className="button login__submit" onClick={(e) => handlForm(e)}>
+              <span className="button__text">Регистрация админа</span>
+              <i className="button__icon fas fa-chevron-right"></i>
+            </button>
           </form>
         </div>
         <div className="screen__background">

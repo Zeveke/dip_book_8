@@ -1,5 +1,6 @@
 import React from 'react';
 import { Gallery } from './gallery';
+import Button from '../Button';
 
 export function Contact() {
   return (
@@ -59,9 +60,9 @@ export function Contact() {
                   placeholder="Введите ваше сообщение"
                 ></textarea>
               </div>
-              <button type="submit" className="btn btn-dark">
-                Отправить
-              </button>
+              <Button type="submit" className="btn btn-dark">
+      Отправить
+    </Button>
             </form>
           </div>
           <div className="col-md-6">
