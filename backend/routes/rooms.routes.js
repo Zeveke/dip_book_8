@@ -7,7 +7,7 @@ const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "C:/Users/markz/Downloads/dip_book8/dip_book8/backend/uploads");
+    cb(null, "C:/");
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
