@@ -12,7 +12,7 @@ const bookingRouter = require("./routes/bookings.routes");
 
 app.use(express.json());
 
-const port = 3005;
+const port = process.env.PORT
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
