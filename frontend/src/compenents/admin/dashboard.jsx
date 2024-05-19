@@ -87,11 +87,8 @@ export function Dashboard() {
                     <div className="number h2" >{canceledCount} </div>
                     <div className="label">Отказ</div>
                 </div>
-                 </div>
-
-                
-        </div>
-        
+                 </div>                
+        </div>        
         {/* Конец отсчета строк */}
       </main>
     </>

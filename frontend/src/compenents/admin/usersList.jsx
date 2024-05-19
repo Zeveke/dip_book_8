@@ -79,8 +79,13 @@ export function UserList() {
                     <tr key={user._id} className={index % 2 === 0 ? 'even-row' : 'odd-row'}>
                       <td>{user.name}</td>
                       <td>{user.email}</td>
-                      <td>                      
-                <Button onClick={(e) => deleteUser(user._id)} name="Удалить пользователя" className="custom-button2" />
+                      <td>
+                      <Button
+      className="custom-button2"
+      onClick={() => deleteUser(user._id)}
+    >
+      Удалить пользователя
+    </Button>
                       </td>
                     </tr>
                   ))}
@@ -110,8 +115,13 @@ export function UserList() {
                     <tr key={user._id} className={index % 2 === 0 ? 'even-row' : 'odd-row'}>
                       <td>{user.name}</td>
                       <td>{user.email}</td>
-                      <td>                    
-                <Button onClick={(e) => deleteUser(user._id)} name="Удалить пользователя" className="custom-button2" />
+                      <td>
+                      <Button
+      className="custom-button2"
+      onClick={() => deleteUser(user._id)}
+    >
+      Удалить пользователя
+    </Button>
                       </td>
                     </tr>
                   ))}

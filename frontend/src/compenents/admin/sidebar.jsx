@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom"; 
 import '../../dash.css';
+import Button from "../Button";
 
 export function AdminSidebar(){
   const navigate = useNavigate();
@@ -80,12 +81,15 @@ export function AdminSidebar(){
 
         
         <li className="navbar-item flexbox-left">
-          <button className="navbar-item-inner flexbox-left" onClick={handleLogoutClick}>
-            <div className="navbar-item-inner-icon-wrapper flexbox">
-              <i className="fas fa-sign-out-alt white"></i>
-            </div>
-            <span className="link-text">Добавить админа</span>
-          </button>
+        <Button
+      className="navbar-item-inner flexbox-left"
+      onClick={handleLogoutClick}
+    >
+      <div className="navbar-item-inner-icon-wrapper flexbox">
+        <i className="fas fa-sign-out-alt white"></i>
+      </div>
+      <span className="link-text">Добавить админа</span>
+    </Button>
         </li>
       </ul>
     </nav>

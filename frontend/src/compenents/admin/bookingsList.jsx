@@ -1,65 +1,56 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-import { cancelBooking, deleteBookingByID, getBooking } from '../../sevices/booking.services';
+import { fetchBookingsRequest, cancelBookingRequest, deleteBookingRequest } from '../admin/redux/actions/bookingAdminActions';
 import { NavBar } from './nav';
 import { AdminSidebar } from './sidebar';
 import { Form } from 'react-bootstrap';
-import Loader from '../client/loader/Loader';
-import Button from '../Button'
-
+import Loader from '../client/loader/loader';
+import Button from '../Button';
 
 export function BookingList() {
-  const [bookings, setBookings] = useState([]);
+  const dispatch = useDispatch();
+  const { bookings, loading, error } = useSelector(state => state.booking);
   const [query, setQuery] = useState('');
-  const [loading, setLoading] = useState(true); 
-
-  const fetchBookings = useCallback(async () => {
-    try {
-      const response = await getBooking(query);
-      setBookings(response.data);
-      setLoading(false); 
-    } catch (error) {
-      console.error('Ошибка при загрузке заказов', error);
-      setLoading(false); 
-    }
-  }, [query]);
 
   useEffect(() => {
-    fetchBookings();
-  }, [fetchBookings]);
+    dispatch(fetchBookingsRequest(query));
+  }, [dispatch, query]);
 
-  async function handleCancelBooking(bookingId) {
-    try {
-      await cancelBooking(bookingId);
-      Swal.fire('Congrats', 'Это бронирование было успешно отменено', 'success').then(result => {
-        window.location.href='/contact';
+  const handleCancelBooking = (bookingId) => {
+    dispatch(cancelBookingRequest(bookingId))
+      .then(() => {
+        Swal.fire('Congrats', 'Это бронирование было успешно отменено', 'success').then(() => {
+          dispatch(fetchBookingsRequest(query));
+        });
+      })
+      .catch((error) => {
+        console.error('Ошибка при бронировании номера:', error);
+        Swal.fire('Oops', 'Что-то пошло не так', 'error');
       });
-    } catch (error) {
-      console.error('Ошибка при бронировании номера:', error);
-      Swal.fire('Oops', 'Что-то пошло не так', 'error');
-    }
-  }
+  };
 
-  async function deleteBooking(id) {
-    try {
-      await deleteBookingByID(id);
-      fetchBookings();
-      Swal.fire('Благодарим!', 'Это бронирование было успешно удалено', 'success').then(result => {
-        window.location.reload();
+  const handleDeleteBooking = (id) => {
+    dispatch(deleteBookingRequest(id))
+      .then(() => {
+        Swal.fire('Благодарим!', 'Это бронирование было успешно удалено', 'success').then(() => {
+          dispatch(fetchBookingsRequest(query));
+        });
+      })
+      .catch((error) => {
+        console.error("Ошибка при удалении бронирования:", error);
+        Swal.fire('Oops', 'Что-то пошло не так', 'error');
       });
-    } catch (error) {
-      console.error("Ошибка при удалении бронирования:", error);
-      Swal.fire('Oops', 'Что-то пошло не так', 'error');
-    }
-  }
+  };
 
   return (
     <>
       <NavBar />
       <AdminSidebar />
-
-      {loading ? ( 
+      {loading ? (
         <Loader />
+      ) : error ? (
+        <p>Ошибка: {error}</p>
       ) : (
         <main id="main" className="flexbox-col p-5">
           <h2 className="center mb-2 ml-5">Лист бронирования</h2>
@@ -85,7 +76,7 @@ export function BookingList() {
                   <td><img 
                     height={100} 
                     width={100} 
-                    src={`${process.env.REACT_APP_API_HOST}${booking.room.image[0]}`} 
+                    src={`${process.env.REACT_APP_API_URL}${booking.room.image[0]}`} 
                     alt={`Изображение номера ${booking.room.name}`} 
                   /></td>
                   <td>{booking.user.name}</td>
@@ -96,10 +87,21 @@ export function BookingList() {
                   <td>{booking.status}</td>
                   <td>
                     <div>
-                      {booking.status === 'booked' && (                       
-                       <Button onClick={(e) => handleCancelBooking(booking._id)} name="Отменить" className="btn btn-danger btn-sm" />
-                      )}                      
-                      <Button onClick={(e) => deleteBooking(booking._id)} name="Удалить" className="btn btn-danger btn-sm ml-3" />
+                      {booking.status === 'booked' && (
+                       <Button
+                       className="btn btn-danger btn-sm"
+                       onClick={() => handleCancelBooking(booking._id)}
+                     >
+                       Отменить
+                     </Button>
+                   )}
+             
+                   <Button
+                     className="btn btn-danger btn-sm ml-3"
+                     onClick={() => handleDeleteBooking(booking._id)}
+                   >
+                     Удалить
+                   </Button>
                     </div>
                   </td>
                 </tr>
@@ -111,4 +113,3 @@ export function BookingList() {
     </>
   );
 }
-

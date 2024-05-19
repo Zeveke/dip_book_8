@@ -237,7 +237,7 @@ const handleEditRoomSubmit = async () => {
             {rooms.map((room, index) => (
               <tr key={room._id} className={index % 2 === 0 ? 'even-row' : 'odd-row'}>
                 <td>{room.name}</td>
-                <td><img height={100} width={100} src={`${process.env.REACT_APP_API_HOST}${room.image[0]}`} alt="" /></td>
+                <td><img height={100} width={100} src={`${process.env.REACT_APP_API_URL}${room.image[0]}`} alt="" /></td>
                 <td>{room.maxcount}</td>
                 <td>{room.phoneNumber}</td>
                 <td>{room.rentperday}</td>
@@ -246,7 +246,6 @@ const handleEditRoomSubmit = async () => {
                     <button className="custom-button1" onClick={() => handleShowEditRoom(room)}>
                       Edit
                     </button>
-                    
                   <button className="custom-button2" onClick={() => deleteRoom(room._id)}>
                     Delete
                   </button>
@@ -271,7 +270,7 @@ const handleEditRoomSubmit = async () => {
                 <Carousel>
                   {selectedRoom.image.map((image, index) => (
                     <Carousel.Item key={index}>
-                      <img className="d-block w-100" src={`${process.env.REACT_APP_API_HOST}${image}`} alt={`Slide ${index}`} />
+                      <img className="d-block w-100" src={`${process.env.REACT_APP_API_URL}${image}`} alt={`Slide ${index}`} />
                     </Carousel.Item>
                   ))}
                 </Carousel>
