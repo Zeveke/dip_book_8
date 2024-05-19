@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { fetchRooms } from './fetchRooms';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchRoomsSuccess, fetchRoomsFailure } from '../redux/actions/galleryActions';
+import { getRooms } from '../../sevices/room.services';
 
 export function Gallery() {
-  const [rooms, setRooms] = useState([]);
-  const query = ''; 
+  const dispatch = useDispatch();
+  const rooms = useSelector(state => state.rooms);
+  const error = useSelector(state => state.error);
 
   useEffect(() => {
-    const getRoomsData = async () => {
+    async function fetchRooms() {
       try {
-        const data = await fetchRooms(query);
-        setRooms(data);
-        console.log("Данные из базы данных:", data);
+        const res = await getRooms('');
+        dispatch(fetchRoomsSuccess(res.data));
+        console.log("Данные из базы данных:", res.data);
       } catch (error) {
+        dispatch(fetchRoomsFailure(error));
         console.error("Ошибка при выборе комнат:", error);
       }
-    };
+    }
 
-    getRoomsData();
-  }, [query]);
+    fetchRooms();
+  }, [dispatch]); 
 
   return (
     <>
